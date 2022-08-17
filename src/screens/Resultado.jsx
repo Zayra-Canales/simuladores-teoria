@@ -1,15 +1,15 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 const Resultado = () => {
 
-
     const { dato } =  useParams();
-
-    console.log('data ', dato)
 
     return (
         <div className='card shadow' >
+              <div className="card-header">
+                <Link to={'/'} className="nav-link justify-contend-end" >Volver</Link>
+            </div>
             <div className='card-body' >
                 <div className='row' >
                 <div className='col-md-6 p-5' >

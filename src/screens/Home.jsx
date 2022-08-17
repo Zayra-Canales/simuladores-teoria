@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { data } from '../data';
 import imagen from '../assets/imagen-1.png'
 
@@ -8,41 +8,64 @@ const Home = () => {
 
     const navigate = useNavigate();
 
-    const [ciudades, setCiudades] = useState(data);
+    const [ciudades] = useState(data);
+
+    const [keyLS] = useState("Esperanza")
+
+    const [dataLocal, setDataLocal] = useState([])
 
     const [ciudad, setCiudad] = useState("");
     const [edad, setEdad] = useState(0);
     const [genero, setGenero] = useState("");
 
+    useEffect(() => {
+
+        setDataLocal(localStorage.getItem(keyLS) ? JSON.parse(localStorage.getItem(keyLS)) : []);
+
+        // eslint-disable-next-line
+    }, [])
+
+
 
     const calcular = () => {
 
-        let result = ciudades.filter(c => c.ciudad == ciudad )[0];
+        let result = ciudades.filter(c => c.ciudad === ciudad)[0];
 
-        if(genero === 'F'){
-            navigate("/resultados-esperanza/"+ result.data.Mujer)
+        let dataLocalSTemp = dataLocal;
+        let porcentage = 0;
+
+        if (genero === 'F') {
+            porcentage = result.data.Mujer
         }
 
-        if(genero === 'M'){
-            navigate("/resultados-esperanza/"+ result.data.Hombre)
+        if (genero === 'M') {
+            porcentage = result.data.Hombre;
         }
 
-        if(genero === 'O'){
-            navigate("/resultados-esperanza/"+ result.data.Ambos)
+        if (genero === 'O') {
+            porcentage = result.data.Ambos;
         }
-    
-        let dataLocal = [];
 
-       
+        let dataHistorial = {
+            ciudad,
+            edad,
+            genero,
+            porcentage
+        }
 
-        //navigate("/resultados-esperanza");
+        dataLocalSTemp.push(dataHistorial);
+
+        localStorage.setItem(keyLS, JSON.stringify(dataLocalSTemp));
+
+        navigate("/resultados-esperanza/" + porcentage)
 
     }
 
-
-
     return (
         <div className='card shadow' >
+            <div className="card-header">
+                <Link to={'/historial-enfermedades'} className="nav-link justify-contend-end" >Historial</Link>
+            </div>
             <div className='card-body' >
                 <div className='row' >
                     <div className='col-md-6 col-sm-12 p-5' >

@@ -1,16 +1,31 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import imagen from '../assets/imagen-1.png'
 
 const Enfermedades = () => {
 
     const navigate = useNavigate();
-
+    const [keyLSHereditarias] = useState("Hereditarias")
+    const [dataLocal, setDataLocal] = useState([])
 
     const [edad, setEdad] = useState(0);
     const [genero, setGenero] = useState("");
     const [nombre, setNombre] = useState("");
     const [enfemedad, setEnfemedad] = useState("");
+    const [enfemedades] = useState([
+        'Fibrosis Quística ',
+        'Hipercolesterolemia Familiar',
+        'Enfermedad de Huntington',
+        'Distrofia Muscular',
+        'Cáncer',
+        'Diabetes',
+        'Hipertensión',
+        'Daltonismo',
+        'Acondroplasia',
+        'Síndrome de Marfan',
+        'Anemia Falciforme',
+        'Miopía'
+    ]);
 
     const calcular = () => {
 
@@ -19,16 +34,35 @@ const Enfermedades = () => {
         console.log("Nombre => ", nombre);
         console.log("Enfemedad => ", enfemedad);
 
+        let porcentage = 80;
 
-        let resuldato = 10;
+        let dataTemp = dataLocal;
 
-        navigate("/resultados-esperanza/" + resuldato);
+        dataTemp.push({
+            nombre,
+            edad,
+            genero,
+            porcentage
+        });
+
+        localStorage.setItem(keyLSHereditarias, JSON.stringify(dataTemp));
+
+        navigate("/resultados-esperanza/" + porcentage);
 
     }
+
+    useEffect(() => {
+
+        setDataLocal(localStorage.getItem(keyLSHereditarias) ? JSON.parse(localStorage.getItem(keyLSHereditarias)) : []);
+
+    }, [])
 
 
     return (
         <div className='card shadow' >
+            <div className="card-header">
+                <Link to={'/historial-enfermedades-hereditarias'} className="nav-link justify-contend-end" >Historial</Link>
+            </div>
             <div className='card-body' >
                 <div className='row' >
                     <div className='col-md-6 p-5' >
@@ -48,7 +82,14 @@ const Enfermedades = () => {
                             </div>
                             <div class="form-group">
                                 <label for="exampleTextarea" class="form-label mt-4">Enfermedades</label>
-                                <textarea value={enfemedad} onChange={e => setEnfemedad(e.target.value)} class="form-control" id="exampleTextarea" placeholder='Enfermedades de sus padres' rows="3"></textarea>
+                                <select onChange={e => setEnfemedad(e.target.value)} className='form-control' name="enfermedades" id="">
+                                    <option value="">--Seleccionar enfermedad--</option>
+                                    {
+                                        enfemedades.map(e => {
+                                            return <option value={e} key={e} > {e} </option>
+                                        })
+                                    }
+                                </select>
                             </div>
                             <div className="form-group">
                                 <legend className="mt-4">Genero</legend>

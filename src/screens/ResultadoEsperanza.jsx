@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import imagen from '../assets/imagen-1.png'
 
 const ResultadoEsperanza = () => {
@@ -9,6 +9,9 @@ const ResultadoEsperanza = () => {
 
     return (
         <div className='card shadow' >
+            <div className="card-header">
+                <Link to={'/historial-enfermedades-hereditarias'}  className="nav-link justify-contend-end" >Historial</Link>
+            </div>
             <div className='card-body' >
                 <div className='row' >
                     <div className='col-md-6 p-5' >
