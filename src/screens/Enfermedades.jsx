@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import imagen from '../assets/imagen-1.png'
+import toast, { Toaster } from 'react-hot-toast';
+import Alert from '../components/Alert';
 
 const Enfermedades = () => {
 
     const navigate = useNavigate();
     const [keyLSHereditarias] = useState("Hereditarias")
     const [dataLocal, setDataLocal] = useState([])
+    const [mostrar, setMostrar] = useState(false)
 
     const [edad, setEdad] = useState(0);
     const [genero, setGenero] = useState("");
@@ -34,6 +37,19 @@ const Enfermedades = () => {
         console.log("Nombre => ", nombre);
         console.log("Enfemedad => ", enfemedad);
 
+
+        if (!validar()) {
+            
+            setMostrar(true);
+
+            setTimeout(() => {
+                setMostrar(false)
+            }, 2000);
+
+
+            return;
+        }
+
         let porcentage = 80;
 
         let dataTemp = dataLocal;
@@ -45,6 +61,8 @@ const Enfermedades = () => {
             porcentage
         });
 
+
+
         localStorage.setItem(keyLSHereditarias, JSON.stringify(dataTemp));
 
         navigate("/resultados-esperanza/" + porcentage);
@@ -53,9 +71,36 @@ const Enfermedades = () => {
 
     useEffect(() => {
 
+
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
+
         setDataLocal(localStorage.getItem(keyLSHereditarias) ? JSON.parse(localStorage.getItem(keyLSHereditarias)) : []);
 
     }, [])
+
+    const validar = () => {
+
+        if (nombre.trim().length == 0) {
+            return false;
+        }
+
+        if (edad == 0) {
+            return false;
+        }
+
+        if (genero.trim().length == 0) {
+            return false;
+        }
+
+        if (genero.trim().length == 0) {
+            return false;
+        }
+
+        return true;
+    }
 
 
     return (
@@ -67,6 +112,11 @@ const Enfermedades = () => {
                 <div className='row' >
                     <div className='col-md-6 p-5' >
                         <div>
+
+                            {
+                                mostrar && <Alert mensaje={'Formulario invalido'} />
+                            }
+
                             <legend>Ingrese sus datos</legend>
                             <div className="form-group row">
                                 <label htmlFor="email" className="col-sm-4 col-form-label">Nombre</label>
@@ -81,7 +131,7 @@ const Enfermedades = () => {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="exampleTextarea" class="form-label mt-4">Enfermedades</label>
+                                <label htmlFor="exampleTextarea" class="form-label mt-4">Enfermedades</label>
                                 <select onChange={e => setEnfemedad(e.target.value)} className='form-control' name="enfermedades" id="">
                                     <option value="">--Seleccionar enfermedad--</option>
                                     {
@@ -116,9 +166,6 @@ const Enfermedades = () => {
                                 <button className='btn btn-primary btn-sm' onClick={calcular} >Calcular</button>
                             </div>
                         </div>
-
-
-
                     </div>
                     <div className='col-md-6 p-5' >
                         <img src={imagen} alt="img" className='img-fluid' />
