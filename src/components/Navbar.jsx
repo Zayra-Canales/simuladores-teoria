@@ -18,6 +18,9 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/enfermedades-hereditarias">Enfermedades hereditarias</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/manual">Manual</Link>
+                        </li>
                     </ul>
                 </div>
             </div>

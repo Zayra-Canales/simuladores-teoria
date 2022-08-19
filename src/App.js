@@ -8,6 +8,8 @@ import ResultadoEsperanza from './screens/ResultadoEsperanza'
 import '../src/assets/bootstrap.min.css'
 import HistorialEnfermedades from './screens/HistorialEnfermedades'
 import HistorialEnfermedadesH from './screens/HistorialEnfermedadesH'
+import Manual from './screens/Manual'
+
 
 const App = () => {
   return (
@@ -22,7 +24,8 @@ const App = () => {
           <Route path='/enfermedades-hereditarias' element={<Enfermedades />} />
           <Route path='/resultados-esperanza/:dato' element={<ResultadoEsperanza />} />
           <Route path='/resultados-enfermedades/:dato/:enfermedad' element={<Resultado />} />
-
+          <Route path='/resultados-enfermedades/:dato/:enfermedad' element={<Resultado />} />
+          <Route path='/manual' element={<Manual />} />
         </Routes>
       </div>
     </BrowserRouter>
