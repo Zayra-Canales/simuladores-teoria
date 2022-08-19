@@ -10,11 +10,12 @@ const Manual = () => {
                 <div className='row' >
                     <div className="col-md-12 p-5">
                         <ul class="list-group list-group-flush">
-                            <li className="list-group-item">Cras justo odio</li>
-                            <li className="list-group-item">Dapibus ac facilisis in</li>
-                            <li className="list-group-item">Morbi leo risus</li>
-                            <li className="list-group-item">Porta ac consectetur ac</li>
-                            <li className="list-group-item">Vestibulum at eros</li>
+                            <li className="list-group-item">1. Debe de ingresar un nombre y un apellido</li>
+                            <li className="list-group-item">2. Ingrese su edad</li>
+                            <li className="list-group-item">3. Seleccione su genero</li>
+                            <li className="list-group-item">4. Ingrese la enfermedad hereditaria de su madre </li>
+                            <li className="list-group-item">5. Ingrese la enfermedad hereditaria de su padre</li>
+                            <li className="list-group-item">6. Haga click en el boton 'Calcular'</li>
                         </ul>
                     </div>
                 </div>
