@@ -21,6 +21,8 @@ const App = () => {
           <Route path='/resultados' element={<Resultado />} />
           <Route path='/enfermedades-hereditarias' element={<Enfermedades />} />
           <Route path='/resultados-esperanza/:dato' element={<ResultadoEsperanza />} />
+          <Route path='/resultados-enfermedades/:dato/:enfermedad' element={<Resultado />} />
+
         </Routes>
       </div>
     </BrowserRouter>

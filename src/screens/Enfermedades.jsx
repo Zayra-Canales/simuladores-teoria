@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import imagen from '../assets/imagen-1.png'
-import toast, { Toaster } from 'react-hot-toast';
 import Alert from '../components/Alert';
+import { probabilidadEnfermedades } from '../data2';
 
 const Enfermedades = () => {
 
@@ -15,6 +14,7 @@ const Enfermedades = () => {
     const [genero, setGenero] = useState("");
     const [nombre, setNombre] = useState("");
     const [enfemedad, setEnfemedad] = useState("");
+    const [enfemedad2, setEnfemedad2] = useState("");
     const [enfemedades] = useState([
         'Fibrosis Quística ',
         'Hipercolesterolemia Familiar',
@@ -32,14 +32,8 @@ const Enfermedades = () => {
 
     const calcular = () => {
 
-        console.log("Edad => ", edad);
-        console.log("Genero => ", genero);
-        console.log("Nombre => ", nombre);
-        console.log("Enfemedad => ", enfemedad);
-
-
         if (!validar()) {
-            
+
             setMostrar(true);
 
             setTimeout(() => {
@@ -50,7 +44,17 @@ const Enfermedades = () => {
             return;
         }
 
-        let porcentage = 80;
+        let porcentage = 0;
+
+        let datos = probabilidadEnfermedades.filter(item => item.enfermedades === enfemedad || item.enfermedades === enfemedad2)[0];
+
+        console.log(datos)
+
+        if (enfemedad === enfemedad2) {
+            porcentage = datos.ambos;
+        }else{
+            porcentage = datos.cualquiera;
+        }
 
         let dataTemp = dataLocal;
 
@@ -65,37 +69,29 @@ const Enfermedades = () => {
 
         localStorage.setItem(keyLSHereditarias, JSON.stringify(dataTemp));
 
-        navigate("/resultados-esperanza/" + porcentage);
+        navigate('/resultados-enfermedades/'+ porcentage +'/' + enfemedad);
 
     }
 
     useEffect(() => {
-
-
-        <Toaster
-            position="top-right"
-            reverseOrder={false}
-        />
-
         setDataLocal(localStorage.getItem(keyLSHereditarias) ? JSON.parse(localStorage.getItem(keyLSHereditarias)) : []);
-
-    }, [])
+    }, [keyLSHereditarias])
 
     const validar = () => {
 
-        if (nombre.trim().length == 0) {
+        if (nombre.trim().length === 0) {
             return false;
         }
 
-        if (edad == 0) {
+        if (edad === 0) {
             return false;
         }
 
-        if (genero.trim().length == 0) {
+        if (genero.trim().length === 0) {
             return false;
         }
 
-        if (genero.trim().length == 0) {
+        if (genero.trim().length === 0) {
             return false;
         }
 
@@ -130,10 +126,25 @@ const Enfermedades = () => {
                                     <input type="number" value={edad} onChange={e => setEdad(e.target.value)} className="form-control-plaintext" id="edad" placeholder='ingrese su edad' />
                                 </div>
                             </div>
+                            <div className="form-group">
+                                <legend className="mt-4">Género </legend>
+                                <div className="form-check">
+                                    <input className="form-check-input" value={"M"} onChange={(e) => setGenero(e.target.value)} checked={genero === 'M' ? true : false} type="radio" name="optionsRadios" id="optionsRadios1" defaultValue="option1" />
+                                    <label className="form-check-label" htmlFor="optionsRadios1">
+                                        Masculino
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input className="form-check-input" value={"F"} onChange={(e) => setGenero(e.target.value)} checked={genero === 'F' ? true : false} type="radio" name="optionsRadios" id="optionsRadios2" defaultValue="option2" />
+                                    <label className="form-check-label" htmlFor="optionsRadios2">
+                                        Femenino
+                                    </label>
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <label htmlFor="exampleTextarea" class="form-label mt-4">Enfermedades</label>
+                                <label htmlFor="exampleTextarea" class="form-label mt-4">Enfermedad Materna</label>
                                 <select onChange={e => setEnfemedad(e.target.value)} className='form-control' name="enfermedades" id="">
-                                    <option value="">--Seleccionar enfermedad--</option>
+                                    <option value="">--Seleccionar Enfermedad--</option>
                                     {
                                         enfemedades.map(e => {
                                             return <option value={e} key={e} > {e} </option>
@@ -141,34 +152,26 @@ const Enfermedades = () => {
                                     }
                                 </select>
                             </div>
-                            <div className="form-group">
-                                <legend className="mt-4">Genero</legend>
-                                <div className="form-check">
-                                    <input className="form-check-input" value={"F"} onChange={(e) => setGenero(e.target.value)} checked={genero === 'F' ? true : false} type="radio" name="optionsRadios" id="optionsRadios1" defaultValue="option1" />
-                                    <label className="form-check-label" htmlFor="optionsRadios1">
-                                        Femenino
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" value={"M"} onChange={(e) => setGenero(e.target.value)} checked={genero === 'M' ? true : false} type="radio" name="optionsRadios" id="optionsRadios2" defaultValue="option2" />
-                                    <label className="form-check-label" htmlFor="optionsRadios2">
-                                        Masculino
-                                    </label>
-                                </div>
-                                <div className="form-check disabled">
-                                    <input className="form-check-input" value={"O"} onChange={(e) => setGenero(e.target.value)} checked={genero === 'O' ? true : false} type="radio" name="optionsRadios" id="optionsRadios3" defaultValue="option3" />
-                                    <label className="form-check-label" htmlFor="optionsRadios3">
-                                        Ambos
-                                    </label>
-                                </div>
+
+                            <div class="form-group">
+                                <label htmlFor="exampleTextarea" class="form-label mt-4">Enfermedad Paterna</label>
+                                <select onChange={e => setEnfemedad2(e.target.value)} className='form-control' name="enfermedades" id="">
+                                    <option value="">--Seleccionar Enfermedad--</option>
+                                    {
+                                        enfemedades.map(e => {
+                                            return <option value={e} key={e} > {e} </option>
+                                        })
+                                    }
+                                </select>
                             </div>
+                            
                             <div className="form-group mt-5">
-                                <button className='btn btn-primary btn-sm' onClick={calcular} >Calcular</button>
+                                <button className='btn btn-primary' onClick={calcular} >Calcular</button>
                             </div>
                         </div>
                     </div>
                     <div className='col-md-6 p-5' >
-                        <img src={imagen} alt="img" className='img-fluid' />
+                        <img src={'https://cdn-icons-png.flaticon.com/512/2927/2927516.png'} alt="img" className='img-fluid' />
                     </div>
                 </div>
             </div>
