@@ -12,14 +12,20 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarColor01">
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Esperanza de vida
+                            <Link className="nav-link d-none" to="/">Esperanza de vida
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/enfermedades-hereditarias">Enfermedades hereditarias</Link>
+                            <Link className="nav-link" to="/enfermedades-hereditarias">Enfermedades Hereditarias</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/manual">Manual de Usuario</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/informacion-general">Información General</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/modelo">Formulación del Modelo</Link>
                         </li>
                     </ul>
                 </div>
